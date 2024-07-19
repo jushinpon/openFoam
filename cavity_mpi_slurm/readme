@@ -1,0 +1,5 @@
+Make sure the decomposeParDict file is properly configured. This file is usually located in the system directory of your case and defines how the domain will be decomposed for parallel processing.
+
+decomposePar
+
+mpiexec -np 4 icoFoam -parallel

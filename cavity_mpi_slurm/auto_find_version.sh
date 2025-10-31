@@ -1,13 +1,27 @@
 #!/bin/sh
-#SBATCH --output=openfoam
+#SBATCH --output=cavity.log
 #SBATCH --job-name=cavity
 #SBATCH --nodes=1
 #SBATCH --cpus-per-task=1
 #SBATCH --partition=All
 ##SBATCH --ntasks-per-node=12
 ##SBATCH --exclude=node23
+#SBATCH --export=ALL
+#SBATCH --get-user-env=L
+
+echo hostname: $(hostname)
+echo date: $(date)
+# ensure 'module' command is defined (for clusters that don't preload it)
+if ! type module &>/dev/null; then
+    if [ -f /usr/share/Modules/init/bash ]; then
+        source /usr/share/Modules/init/bash
+    elif [ -f /etc/profile.d/modules.sh ]; then
+        source /etc/profile.d/modules.sh
+    fi
+fi
 
 module load mpi
+echo "which mpiexec: $(which mpiexec)"
 
 # === Dynamically detect OpenFOAM version ===
 foam_base="/usr/lib/openfoam"

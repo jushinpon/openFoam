@@ -1,0 +1,59 @@
+scale 1.0;
+
+cvx 0.0;
+cvy 0.0;
+
+ri 1.0;
+ro 5.0;
+
+nx 10;
+ny 1;
+nz 1;
+
+pxi #calc "$cvx+$ri";
+nxi #calc "$cvx-$ri";
+pyi #calc "$cvy+$ri";
+nyi #calc "$cvy-$ri";
+
+pxo #calc "$cvx+$ro";
+nxo #calc "$cvx-$ro";
+pyo #calc "$cvy+$ro";
+nyo #calc "$cvy-$ro";
+
+vertices
+(
+    ($nxi $nyi 0)  // 0
+    ($pxi $nyi 0)  // 1
+    ($pxi $pyi 0)  // 2
+    ($nxi $pyi 0)  // 3
+    ($nxo $nyo 0)  // 4
+    ($pxo $nyo 0)  // 5
+    ($pxo $pyo 0)  // 6
+    ($nxo $pyo 0)  // 7
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (nx ny nz) simpleGrading (1 1 1)
+);
+
+boundary
+{
+    inlet
+    {
+        type patch;
+        faces ((0 3 2 1));
+    }
+    outlet
+    {
+        type patch;
+        faces ((4 5 6 7));
+    }
+    walls
+    {
+        type wall;
+        faces ((0 1 5 4) (3 0 4 7) (2 3 7 6) (1 2 6 5));
+    }
+}
+
+mergePatchPairs ();
